@@ -104,6 +104,31 @@ class BinaryTree:
         self._postorder_traversal(node.right, result)
         result.append(node.value)
 
+    def classify_value(self, value):
+        """对输入值进行分类"""
+        if not self.root:
+            return "树为空，无法分类"
+
+        current = self.root
+        path = []
+        while current:
+            path.append(str(current.value))
+            if value == current.value:
+                return (
+                    f"值 {value} 等于节点 {current.value}，分类路径：{'->'.join(path)}"
+                )
+            elif value < current.value:
+                if current.left:
+                    current = current.left
+                else:
+                    return f"值 {value} 小于节点 {current.value}，属于左子树类别，分类路径：{'->'.join(path)}"
+            else:
+                if current.right:
+                    current = current.right
+                else:
+                    return f"值 {value} 大于节点 {current.value}，属于右子树类别，分类路径：{'->'.join(path)}"
+        return "无法完成分类"
+
 
 class BinaryTreeApp:
     """二叉树可视化应用"""
@@ -118,7 +143,7 @@ class BinaryTreeApp:
         self.canvas.bind("<Button-1>", self.on_canvas_click)
 
     def build_ui(self):
-        self.root.title("二叉树可视化工具")
+        self.root.title("二叉树可视化与分类工具")
         self.root.geometry("800x600")
 
         # 顶部控制面板
@@ -155,6 +180,20 @@ class BinaryTreeApp:
             control_frame, text="后序遍历结果：", anchor="w"
         )
         self.postorder_label.grid(row=4, column=0, columnspan=3, sticky="w", padx=5)
+
+        # 添加分类功能
+        classify_frame = ttk.Frame(control_frame)
+        classify_frame.grid(row=5, column=0, columnspan=3, sticky="w", padx=5)
+
+        self.classify_entry = ttk.Entry(classify_frame)
+        self.classify_entry.pack(side=tk.LEFT, padx=5)
+
+        ttk.Button(classify_frame, text="分类", command=self.classify_value).pack(
+            side=tk.LEFT, padx=5
+        )
+
+        self.classify_result = ttk.Label(classify_frame, text="分类结果：", anchor="w")
+        self.classify_result.pack(side=tk.LEFT, padx=5)
 
         # 二叉树可视化面板
         self.canvas = tk.Canvas(self.root, bg="white", height=500)
@@ -231,6 +270,15 @@ class BinaryTreeApp:
                 self.entry_value.delete(0, tk.END)
                 self.entry_value.insert(0, str(value))
                 return
+
+    def classify_value(self):
+        """处理分类请求"""
+        try:
+            value = int(self.classify_entry.get())
+            result = self.tree.classify_value(value)
+            self.classify_result.config(text=f"分类结果：{result}")
+        except ValueError:
+            self.classify_result.config(text="分类结果：请输入有效的整数值！")
 
 
 if __name__ == "__main__":
