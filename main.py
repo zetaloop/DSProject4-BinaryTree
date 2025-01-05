@@ -148,42 +148,52 @@ class BinaryTreeApp:
 
         # 顶部控制面板
         control_frame = ttk.Frame(self.root)
-        control_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
+        control_frame.pack(side=tk.TOP, fill=tk.X, padx=10, pady=5)
 
-        self.entry_value = ttk.Entry(control_frame)
-        self.entry_value.grid(row=0, column=0, padx=5)
+        # 输入和操作按钮区域
+        input_frame = ttk.Frame(control_frame)
+        input_frame.pack(fill=tk.X, padx=5, pady=5)
 
-        ttk.Button(control_frame, text="插入", command=self.insert_value).grid(
-            row=0, column=1, padx=5
+        self.entry_value = ttk.Entry(input_frame)
+        self.entry_value.pack(side=tk.LEFT, padx=5)
+
+        ttk.Button(input_frame, text="插入", command=self.insert_value).pack(
+            side=tk.LEFT, padx=5
         )
-        ttk.Button(control_frame, text="删除", command=self.delete_value).grid(
-            row=0, column=2, padx=5
+        ttk.Button(input_frame, text="删除", command=self.delete_value).pack(
+            side=tk.LEFT, padx=5
         )
 
-        # 遍历结果显示区域
+        # 说明信息
         self.info_label = ttk.Label(
             control_frame,
             text="说明：输入数值添加节点，点击选择一个节点",
             anchor="w",
         )
-        self.info_label.grid(row=1, column=0, columnspan=3, sticky="w", padx=5)
+        self.info_label.pack(fill=tk.X, padx=5, pady=2)
+
+        # 遍历结果显示区域
+        traversal_frame = ttk.Frame(control_frame)
+        traversal_frame.pack(fill=tk.X, padx=5, pady=2)
 
         self.preorder_label = ttk.Label(
-            control_frame, text="前序遍历结果：", anchor="w"
+            traversal_frame, text="前序遍历结果：", anchor="w"
         )
-        self.preorder_label.grid(row=2, column=0, columnspan=3, sticky="w", padx=5)
+        self.preorder_label.pack(fill=tk.X, pady=1)
 
-        self.inorder_label = ttk.Label(control_frame, text="中序遍历结果：", anchor="w")
-        self.inorder_label.grid(row=3, column=0, columnspan=3, sticky="w", padx=5)
+        self.inorder_label = ttk.Label(
+            traversal_frame, text="中序遍历结果：", anchor="w"
+        )
+        self.inorder_label.pack(fill=tk.X, pady=1)
 
         self.postorder_label = ttk.Label(
-            control_frame, text="后序遍历结果：", anchor="w"
+            traversal_frame, text="后序遍历结果：", anchor="w"
         )
-        self.postorder_label.grid(row=4, column=0, columnspan=3, sticky="w", padx=5)
+        self.postorder_label.pack(fill=tk.X, pady=1)
 
-        # 添加分类功能
+        # 分类功能区域
         classify_frame = ttk.Frame(control_frame)
-        classify_frame.grid(row=5, column=0, columnspan=3, sticky="w", padx=5)
+        classify_frame.pack(fill=tk.X, padx=5, pady=5)
 
         self.classify_entry = ttk.Entry(classify_frame)
         self.classify_entry.pack(side=tk.LEFT, padx=5)
